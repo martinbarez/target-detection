@@ -1,4 +1,4 @@
-import numpy
+import numpy as np
 import logging
 import sys
 
@@ -8,7 +8,7 @@ logging.basicConfig(stream=sys.stderr, level=logging.WARNING)
 
 def inversa(cov, cov_in, cov_up, cov_bc, cov_dg, inv_in, inv_up, inv_bc, inv_dg):
     n_bandas = cov.shape[0]
-    inv = numpy.zeros([n_bandas, n_bandas], cov.dtype)
+    inv = np.zeros([n_bandas, n_bandas], cov.dtype)
 
     c = contar()
 
