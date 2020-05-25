@@ -6,7 +6,7 @@ from manipular import contar
 
 logging.basicConfig(stream=sys.stderr, level=logging.WARNING)
 
-def inversa(cov, cov_in, cov_up, cov_bc, cov_dg, inv_in, inv_up, inv_bc, inv_dg):
+def inversa(cov, cov_in, cov_up=1, cov_bc=1, cov_dg=1, inv_in=1, inv_up=1, inv_bc=1, inv_dg=1):
     n_bandas = cov.shape[0]
     inv = np.zeros([n_bandas, n_bandas], cov.dtype)
 
