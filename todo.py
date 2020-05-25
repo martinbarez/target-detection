@@ -58,7 +58,7 @@ else:
 
     while reset or any(valid):
         inversa_fija, bits = inversa(c_aux, *values)
-        rx_fijo = valores_rx(M, inversa_fija, d_aux)
+        rx_fijo = valores_rx(X.shape[1], inversa_fija, d_aux)
         ratio = comparar(rx_fijo, rx_flotante)
         
         print(values)
@@ -86,11 +86,12 @@ else:
                     values[i] = values[i] + 1
                     valid[i] = False
                     break
+    print(values)
+    print(bits_antes, "bits,", "ratio:", ratio_antes, '\n')
 
 
 
 #Imprimo resultados
-print(values)
 print("El bit más significativo está en la posición:", bits)
 print("Similitud con resultado correcto:", max(ratio, ratio_antes))
 
