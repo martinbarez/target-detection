@@ -6,6 +6,7 @@ class contar:
     def __init__(self):
         self.bits = 0
 
+    #tengo que renombrar esto, porque hace de todo menos truncar
     def truncar(self, X):
         bit = 56
 
@@ -38,6 +39,10 @@ def comparar(fijo, flotante):
     #me quedo con el 5%
     #fijo = fijo [: len(fijo)//20]
     #flotante = flotante[: len(flotante)//20]
+
+    #ordeno para ignorar el orden
+    #fijo.sort()
+    #flotante.sort()
 
     #elimino valores
     fijo = [x[0] for x in fijo]
