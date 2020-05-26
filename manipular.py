@@ -1,5 +1,4 @@
 from difflib import SequenceMatcher
-import numpy
 
 #para llevar el contador aquí escondido en vez de fuera
 class contar:
@@ -15,8 +14,9 @@ class contar:
             for j in range(X.shape[1]):
                 X[i][j] = X[i][j] // 1
 
-        #que todos los elementos cumplan ambas condiciones
-        while True and bit > 0 and all(
+        #cuento los bits necesarios
+        #cuando todos los elementos cumplen ambas condiciones
+        while False and bit > 0 and all(
             j <  (2 << (bit-1)) and
             j > -(2 << (bit-1))
                   for i in X
@@ -37,7 +37,7 @@ def comparar(fijo, flotante):
     flotante.sort(key=lambda tup: tup[1], reverse=True)
 
     #me quedo con el 5%
-    #fijo = fijo [: len(fijo)//20]
+    #fijo = fijo[: len(fijo)//20]
     #flotante = flotante[: len(flotante)//20]
 
     #ordeno para ignorar el orden

@@ -1,11 +1,11 @@
-import numpy
+import numpy as np
 
 def media(X):
-    return numpy.mean(X, axis=1)
+    return np.mean(X, axis=1)
 
 
 def deviacion(X, media_bandas):
-    Xt = numpy.transpose(X.copy())
+    Xt = np.transpose(X.copy())
 
     #A cada toma le resto la media de su banda
     deviacion = (Xt-media_bandas)
@@ -14,9 +14,9 @@ def deviacion(X, media_bandas):
 
 def covarianza(X, deviacion):
     #Transpongo
-    devt = numpy.transpose(deviacion)
+    devt = np.transpose(deviacion)
 	#Mutiplico
-    otra = numpy.matmul(devt, deviacion)
+    otra = np.matmul(devt, deviacion)
 
     #divido por algo fijo, pero que si puedo tomar algo de error mejor desplazo
     n_pixeles = X.shape[1]
@@ -26,9 +26,9 @@ def covarianza(X, deviacion):
     return covarianza
 
 def valores_rx(n_pixeles, inversa, deviacion):
-	rx = numpy.zeros(n_pixeles, numpy.float32)
+	rx = np.zeros(n_pixeles, np.float32)
 	for i in range(n_pixeles):
 		resta = deviacion[i]
-		t = numpy.transpose(resta)
-		rx[i] = numpy.matmul(t, numpy.matmul(inversa, resta))
+		t = np.transpose(resta)
+		rx[i] = np.matmul(t, np.matmul(inversa, resta))
 	return rx
