@@ -61,7 +61,7 @@ else:
 
         ratio = comparar(rx_fijo, rx_flotante)
 
-        if ratio >= ratio_antes and bits_antes <= bits:
+        if ratio >= ratio_antes and bits_antes >= bits:
             bits_antes = bits
             ratio_antes = ratio
             if new:
