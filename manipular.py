@@ -1,5 +1,3 @@
-from difflib import SequenceMatcher
-
 #para llevar el contador aquí escondido en vez de fuera
 class contar:
     def __init__(self):
@@ -26,29 +24,3 @@ class contar:
 
         self.bits = max(bit, self.bits)
         return bit
-
-def comparar(fijo, flotante):
-    #añado índices
-    fijo = list(enumerate(fijo))
-    flotante = list(enumerate(flotante))
-
-    #ordeno
-    fijo.sort(key=lambda tup: tup[1], reverse=True)
-    flotante.sort(key=lambda tup: tup[1], reverse=True)
-
-    #me quedo con el 5%
-    #fijo = fijo[: len(fijo)//20]
-    #flotante = flotante[: len(flotante)//20]
-
-    #ordeno para ignorar el orden
-    #fijo.sort()
-    #flotante.sort()
-
-    #elimino valores
-    fijo = [x[0] for x in fijo]
-    flotante = [x[0] for x in flotante]
-
-    #comparo índices
-    sm = SequenceMatcher(None, fijo, flotante)
-
-    return sm.ratio()

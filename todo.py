@@ -2,7 +2,7 @@ import spectral.io.envi as envi
 import numpy as np
 from operaciones import media, deviacion, covarianza, valores_rx
 from inversa import inversa
-from manipular import comparar
+from comparar import *
 np.set_printoptions(suppress=True, linewidth=210)
 
 
@@ -44,7 +44,9 @@ if True:
     inversa_fija, bits = inversa(c_aux, *[13, 38])
 
     rx_fijo = valores_rx(X.shape[1], inversa_fija, d_aux)
-    ratio = comparar(rx_fijo, rx_flotante)
+    
+    res_ordenados = ordenar_resultados(rx_fijo, rx_flotante, 50)
+    grafico(*res_ordenados)
 
 else:
     n_vars = 2
@@ -87,12 +89,3 @@ else:
                     break
     print(values)
     ratio = ratio_antes
-
-
-
-
-#Imprimo resultados
-print("El bit más significativo está en la posición:", bits)
-print("Similitud con resultado correcto:", ratio)
-
-print("Fin")
