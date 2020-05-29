@@ -10,22 +10,24 @@ logging.basicConfig(stream=sys.stderr, level=logging.WARNING)
 def inversa(cov, cov_in, inv_in):
     n_bandas = cov.shape[0]
     inv = np.zeros([n_bandas, n_bandas], cov.dtype)
-
-    c = contar()
+    max_bits = 0
 
     #lo inicializo como identidad
     for i in range(n_bandas):
         inv[i][i] = 1
 
-    cov = cov // 1
-    inv = inv // 1
     cov = cov * pow(2, cov_in)
     inv = inv * pow(2, inv_in)
     logging.info("Covarianza:")
-    logging.info(c.truncar(cov))
+    c = contar(cov)
+    max_bits = max(max_bits, c)
+    logging.info(c)
     logging.debug(cov)
     logging.info("Inversa:")
-    logging.info(c.truncar(inv))
+    c = contar(inv)
+    max_bits = max(max_bits, c)
+    logging.info(c)
+    logging.debug(inv)
 
     #forward elimination to build an upper triangular matrix
     for i in range(n_bandas):
@@ -42,11 +44,15 @@ def inversa(cov, cov_in, inv_in):
             inv[j] = (inv[j] - inv[i] * (cov[j][i] / cov[i][i]))
             cov[j] = (cov[j] - cov[i] * (cov[j][i] / cov[i][i]))
 
-    inv = inv // 1
     logging.info("Covarianza:")
-    logging.info(c.truncar(cov))
+    c = contar(cov)
+    max_bits = max(max_bits, c)
+    logging.info(c)
+    logging.debug(cov)
     logging.info("Inversa:")
-    logging.info(c.truncar(inv))
+    c = contar(inv)
+    max_bits = max(max_bits, c)
+    logging.info(c)
     logging.debug(inv)
 
     #backward elimination to build a diagonal matrix
@@ -55,11 +61,15 @@ def inversa(cov, cov_in, inv_in):
             inv[j] = (inv[j] - inv[i] * (cov[j][i] / cov[i][i]))
             cov[j] = (cov[j] - cov[i] * (cov[j][i] / cov[i][i]))
 
-    inv = inv // 1
     logging.info("Covarianza:")
-    logging.info(c.truncar(cov))
+    c = contar(cov)
+    max_bits = max(max_bits, c)
+    logging.info(c)
+    logging.debug(cov)
     logging.info("Inversa:")
-    logging.info(c.truncar(inv))
+    c = contar(inv)
+    max_bits = max(max_bits, c)
+    logging.info(c)
     logging.debug(inv)
 
     #last division to build identity [i][i]/[i][i]
@@ -67,5 +77,6 @@ def inversa(cov, cov_in, inv_in):
         inv[i] = (inv[i] * (1 / cov[i][i]))
 
     inv = inv // 1
+    max_bits = max(max_bits, contar(inv))
 
-    return inv, c.bits
+    return inv, max_bits
