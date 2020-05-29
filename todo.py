@@ -50,7 +50,7 @@ div_up = 33
 div_bc = 19
 div_dg = 13
 
-inversa_fija, bits = inversa(c_aux, cov_in, inv_in, div_up, div_bc, div_dg)
+inversa_fija, bits = inversa(c_aux, cov_in, inv_in, div_up, div_bc, div_dg, True)
 
 rx_fijo = valores_rx(X.shape[1], inversa_fija, d_aux)
 

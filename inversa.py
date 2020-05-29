@@ -7,7 +7,7 @@ from manipular import contar
 logging.basicConfig(stream=sys.stderr, level=logging.WARNING)
 
 
-def inversa(cov, cov_in, inv_in, div_up, div_bc, div_dg):
+def inversa(cov, cov_in, inv_in, div_up, div_bc, div_dg, count_en):
     n_bandas = cov.shape[0]
     inv = np.zeros([n_bandas, n_bandas], cov.dtype)
     max_bits = 0
@@ -19,12 +19,12 @@ def inversa(cov, cov_in, inv_in, div_up, div_bc, div_dg):
     cov = cov * pow(2, cov_in)
     inv = inv * pow(2, inv_in)
     logging.info("Covarianza:")
-    c = contar(cov)
+    c = contar(cov, count_en)
     max_bits = max(max_bits, c)
     logging.info(c)
     logging.debug(cov)
     logging.info("Inversa:")
-    c = contar(inv)
+    c = contar(inv, count_en)
     max_bits = max(max_bits, c)
     logging.info(c)
     logging.debug(inv)
@@ -48,12 +48,12 @@ def inversa(cov, cov_in, inv_in, div_up, div_bc, div_dg):
             cov[j] = cov[j] - cov[i] * div * pow(2, -div_up)
 
     logging.info("Covarianza:")
-    c = contar(cov)
+    c = contar(cov, count_en)
     max_bits = max(max_bits, c)
     logging.info(c)
     logging.debug(cov)
     logging.info("Inversa:")
-    c = contar(inv)
+    c = contar(inv, count_en)
     max_bits = max(max_bits, c)
     logging.info(c)
     logging.debug(inv)
@@ -68,12 +68,12 @@ def inversa(cov, cov_in, inv_in, div_up, div_bc, div_dg):
             cov[j] = cov[j] - cov[i] * div * pow(2, -div_bc)
 
     logging.info("Covarianza:")
-    c = contar(cov)
+    c = contar(cov, count_en)
     max_bits = max(max_bits, c)
     logging.info(c)
     logging.debug(cov)
     logging.info("Inversa:")
-    c = contar(inv)
+    c = contar(inv, count_en)
     max_bits = max(max_bits, c)
     logging.info(c)
     logging.debug(inv)
@@ -83,6 +83,6 @@ def inversa(cov, cov_in, inv_in, div_up, div_bc, div_dg):
         inv[i] = (inv[i] / cov[i][i])* pow(2, div_dg)
 
     inv = inv // 1
-    max_bits = max(max_bits, contar(inv))
+    max_bits = max(max_bits, contar(inv, count_en))
 
     return inv, max_bits
