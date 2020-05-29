@@ -40,52 +40,21 @@ c_aux = covarianza(X, d_aux)
 inversa_flotante = np.linalg.inv(c_aux)
 rx_flotante = valores_rx(X.shape[1], inversa_flotante, d_aux)
 
-if True:
-    inversa_fija, bits = inversa(c_aux, *[13, 38])
 
-    rx_fijo = valores_rx(X.shape[1], inversa_fija, d_aux)
-    
-    res_ordenados = ordenar_resultados(rx_fijo, rx_flotante, 50)
-    grafico(*res_ordenados)
 
-else:
-    n_vars = 2
-    reset = False
-    new = True
-    values = [16, 16]
-    valid = [True]*n_vars
-    bits_antes = 64
-    ratio_antes = 0
+from difflib import SequenceMatcher
 
-    while reset or any(valid):
-        inversa_fija, bits = inversa(c_aux, *values)
-        rx_fijo = valores_rx(X.shape[1], inversa_fija, d_aux)
-        ratio = comparar(rx_fijo, rx_flotante)
+cov_in = 13
+inv_in = 38
+div_up = 33
+div_bc = 19
+div_dg = 13
 
-        print(values)
-        print(bits, "bits,", "ratio:", ratio, '\n')
+inversa_fija, bits = inversa(c_aux, cov_in, inv_in, div_up, div_bc, div_dg)
 
-        if ratio >= ratio_antes and bits_antes >= bits:
-            bits_antes = bits
-            ratio_antes = ratio
-            if new:
-                reset = True
-            for i in range(n_vars):
-                if values[i] == 0:
-                    valid[i] = False
-                if valid[i]:
-                    values[i] = values[i] - 1
-                    new = True
-                    break
-            if reset and not any(valid):
-                reset = False
-                valid = [True]*n_vars
-        else:
-            new = False
-            for i in range(n_vars):
-                if valid[i]:
-                    values[i] = values[i] + 1
-                    valid[i] = False
-                    break
-    print(values)
-    ratio = ratio_antes
+rx_fijo = valores_rx(X.shape[1], inversa_fija, d_aux)
+
+res_ordenados = ordenar_resultados(rx_fijo, rx_flotante, 4096)
+
+print(SequenceMatcher(None, *res_ordenados).ratio())
+print(bits)

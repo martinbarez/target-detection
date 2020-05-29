@@ -7,7 +7,7 @@ from manipular import contar
 logging.basicConfig(stream=sys.stderr, level=logging.WARNING)
 
 
-def inversa(cov, cov_in, inv_in):
+def inversa(cov, cov_in, inv_in, div_up, div_bc, div_dg):
     n_bandas = cov.shape[0]
     inv = np.zeros([n_bandas, n_bandas], cov.dtype)
     max_bits = 0
@@ -41,8 +41,11 @@ def inversa(cov, cov_in, inv_in):
         assert cov[i][i] is not 0, "Matrix is singular"
 
         for j in range(i + 1, n_bandas):
-            inv[j] = (inv[j] - inv[i] * (cov[j][i] / cov[i][i]))
-            cov[j] = (cov[j] - cov[i] * (cov[j][i] / cov[i][i]))
+            div = cov[j][i] / cov[i][i]
+            div = div*pow(2, div_up)
+            div = div // 1
+            inv[j] = inv[j] - inv[i] * div * pow(2, -div_up)
+            cov[j] = cov[j] - cov[i] * div * pow(2, -div_up)
 
     logging.info("Covarianza:")
     c = contar(cov)
@@ -58,8 +61,11 @@ def inversa(cov, cov_in, inv_in):
     #backward elimination to build a diagonal matrix
     for i in range(n_bandas-1, 0, -1):
         for j in range(i-1, -1, -1):
-            inv[j] = (inv[j] - inv[i] * (cov[j][i] / cov[i][i]))
-            cov[j] = (cov[j] - cov[i] * (cov[j][i] / cov[i][i]))
+            div = cov[j][i] / cov[i][i]
+            div = div*pow(2, div_bc)
+            div = div // 1
+            inv[j] = inv[j] - inv[i] * div * pow(2, -div_bc)
+            cov[j] = cov[j] - cov[i] * div * pow(2, -div_bc)
 
     logging.info("Covarianza:")
     c = contar(cov)
@@ -74,7 +80,7 @@ def inversa(cov, cov_in, inv_in):
 
     #last division to build identity [i][i]/[i][i]
     for i in range(n_bandas):
-        inv[i] = (inv[i] * (1 / cov[i][i]))
+        inv[i] = (inv[i] / cov[i][i])* pow(2, div_dg)
 
     inv = inv // 1
     max_bits = max(max_bits, contar(inv))
