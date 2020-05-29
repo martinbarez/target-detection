@@ -4,13 +4,17 @@ import sys
 
 from manipular import contar
 
-logging.basicConfig(stream=sys.stderr, level=logging.WARNING)
 
 
 def inversa(cov, cov_in, inv_in, div_up, div_bc, div_dg, count_en):
     n_bandas = cov.shape[0]
     inv = np.zeros([n_bandas, n_bandas], cov.dtype)
     max_bits = 0
+
+    if count_en:
+        logging.basicConfig(stream=sys.stderr, level=logging.INFO)
+    else:
+        logging.basicConfig(stream=sys.stderr, level=logging.WARNING)
 
     #lo inicializo como identidad
     for i in range(n_bandas):
