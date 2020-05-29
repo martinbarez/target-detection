@@ -2,7 +2,7 @@ import spectral.io.envi as envi
 import numpy as np
 from operaciones import media, deviacion, covarianza, valores_rx
 from inversa import inversa
-from comparar import *
+from comparar import ordenar_resultados
 np.set_printoptions(suppress=True, linewidth=210)
 
 
@@ -44,17 +44,18 @@ rx_flotante = valores_rx(X.shape[1], inversa_flotante, d_aux)
 
 from difflib import SequenceMatcher
 
-cov_in = 13
-inv_in = 38
-div_up = 33
-div_bc = 19
-div_dg = 13
+cov_in = 18
+inv_in = 30
+div_up = 21
+div_bc = 13
+div_dg = 22
+cnt_en = True
 
-inversa_fija, bits = inversa(c_aux, cov_in, inv_in, div_up, div_bc, div_dg, True)
+inversa_fija, bits = inversa(c_aux, cov_in, inv_in, div_up, div_bc, div_dg, cnt_en)
 
 rx_fijo = valores_rx(X.shape[1], inversa_fija, d_aux)
 
-res_ordenados = ordenar_resultados(rx_fijo, rx_flotante, 4096)
+res_ordenados = ordenar_resultados(rx_fijo, rx_flotante, 64)
 
 print(SequenceMatcher(None, *res_ordenados).ratio())
-print(bits)
+if cnt_en: print(bits)
