@@ -3,6 +3,7 @@ import numpy as np
 from operaciones import media, deviacion, covarianza, valores_rx
 from inversa import inversa
 from comparar import ordenar_resultados
+from testbench import gen_testbench
 np.set_printoptions(suppress=True, linewidth=210)
 
 
@@ -29,7 +30,7 @@ X = np.reshape(img, (img.shape[0] * img.shape[1], img.shape[2]))
 X = np.transpose(X) #para que cada banda sea una fila
 
 #Lo transformo a float para realizar todas las operaciones
-X = X.astype(np.float64)
+X = X.astype(np.float32)
 
 #Las operaciones previas
 m_aux = media(X)
@@ -59,3 +60,5 @@ res_ordenados = ordenar_resultados(rx_fijo, rx_flotante, 64)
 
 print(SequenceMatcher(None, *res_ordenados).ratio())
 if cnt_en: print(bits)
+
+gen_testbench(m_aux, c_aux, X, res_ordenados[1])
