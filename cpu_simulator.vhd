@@ -127,7 +127,11 @@ begin
             res_fifo_wr_en => res_fifo_wr_en
         );
 
-    covariance : covariance_fifo
+    covariance : entity work.standard_fifo
+        generic map (
+            data_width => n_bands*precision,
+            fifo_depth => n_bands
+            )
         PORT MAP (
             clk   => clk,
             rst   => rst,
@@ -140,7 +144,11 @@ begin
         );
 
 
-    mean_fifo : element_fifo
+    mean_fifo : entity work.standard_fifo
+        generic map (
+            data_width => precision,
+            fifo_depth => n_bands+n_bands*n_pixels
+            )
         PORT MAP (
             clk   => clk,
             rst   => rst,
@@ -152,9 +160,14 @@ begin
             empty => mean_fifo_empty
         );
 
-    res_fifo : result_fifo
+    res_fifo : entity work.standard_fifo
+        generic map (
+            data_width => log_pixels,
+            fifo_depth => n_pixels
+            )
         PORT MAP(
             clk   => clk,
+            rst => rst,
             din   => res_fifo_din,
             wr_en => res_fifo_wr_en,
             rd_en => res_fifo_rd_en,
