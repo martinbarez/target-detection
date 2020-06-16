@@ -90,7 +90,6 @@ def write_all_pixel(file, matrix):
 
 
 def write_assert(file, result, size):
-    print(size)
     file.write("res_fifo_rd_en <= '1';\n")
     file.write("\n")
     file.write("wait until CLK = '1';\n")
