@@ -39,7 +39,7 @@ def write_testbench(file, mean, covariance, matrix, result):
     file.write("\n")
     file.write("wait until ready = '1';\n")
 
-    write_assert(file, result)
+    write_assert(file, result, matrix.size)
 
 
 def write_cov(file, covariance):
@@ -89,13 +89,13 @@ def write_all_pixel(file, matrix):
     file.write("\n")
 
 
-def write_assert(file, result):
+def write_assert(file, result, size):
     file.write("res_fifo_rd_en <= '1';\n")
     file.write("\n")
     file.write("wait until CLK = '1';\n")
     file.write("wait until CLK = '1';\n")
-    bin_size = len(bin(len(result) - 1)) - 2
-    hex_size = len(hex(len(result) - 1)) - 2
+    bin_size = len(bin(size - 1)) - 2
+    hex_size = len(hex(size - 1)) - 2
     for e in result:
         s = 'assert (res_fifo_dout = "'
         s += bin(e)[2:].zfill(bin_size)
