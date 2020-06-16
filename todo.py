@@ -26,6 +26,8 @@ X = np.random.randint(low=0, high=256, size=(N, M))
 
 #Una imagen de verdad
 img = envi.open('hydice.hdr').load()
+#para cortar la imagen
+#img = img[10:20, 10:20, 0:55]
 X = np.reshape(img, (img.shape[0] * img.shape[1], img.shape[2]))
 X = np.transpose(X) #para que cada banda sea una fila
 
