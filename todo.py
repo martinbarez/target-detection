@@ -47,7 +47,7 @@ rx_flotante = valores_rx(X.shape[1], inversa_flotante, d_aux)
 
 from difflib import SequenceMatcher
 
-cov_in = 18
+cov_in = 15
 inv_in = 30
 div_up = 21
 div_bc = 13

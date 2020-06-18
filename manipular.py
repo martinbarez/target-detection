@@ -10,3 +10,10 @@ def contar(X, habilitar):
         bit = bit - 1
 
     return bit
+
+def contar_num(n, habilitar):
+    bit = 64
+    while habilitar and bit > 0 and n < (2 << (bit-1)) and n > -(2 << (bit-1)):
+        bit = bit - 1
+
+    return bit
