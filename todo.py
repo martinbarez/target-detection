@@ -32,7 +32,7 @@ X = np.reshape(img, (img.shape[0] * img.shape[1], img.shape[2]))
 X = np.transpose(X) #para que cada banda sea una fila
 
 #Lo transformo a float para realizar todas las operaciones
-X = X.astype(np.float32)
+X = X.astype(np.float64)
 
 #Las operaciones previas
 m_aux = media(X)
