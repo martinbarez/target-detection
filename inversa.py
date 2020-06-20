@@ -8,7 +8,7 @@ from manipular import contar, contar_num
 
 def inversa(cov, cov_in, inv_in, div_up, div_bc, div_dg, count_en):
     n_bandas = cov.shape[0]
-    inv = np.zeros([n_bandas, n_bandas], cov.dtype)
+    inv = np.zeros([n_bandas, n_bandas], np.int64)
 
     if count_en:
         logging.basicConfig(stream=sys.stderr, level=logging.INFO)
@@ -40,7 +40,7 @@ def inversa(cov, cov_in, inv_in, div_up, div_bc, div_dg, count_en):
                     cov[[i, j]] = cov[[j, i]]
                     inv[[i, j]] = inv[[j, i]]
                     print("swapped", i, j)
-        assert cov[i][i] is not 0, "Matrix is singular"
+        assert cov[i][i] != 0, "Matrix is singular"
 
         for j in range(i + 1, n_bandas):
             div = cov[j][i] / cov[i][i]
@@ -94,4 +94,4 @@ def inversa(cov, cov_in, inv_in, div_up, div_bc, div_dg, count_en):
         inv = inv * pow(2, -1)
         inv = inv //1
 
-    return inv, contar(inv, count_en)
+    return inv.astype(np.int64), contar(inv, count_en)

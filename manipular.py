@@ -1,4 +1,4 @@
-def contar(X, habilitar):
+def contar(X, habilitar=True):
     bit = 64
     #cuento los bits necesarios
     #cuando todos los elementos cumplen ambas condiciones
@@ -11,7 +11,7 @@ def contar(X, habilitar):
 
     return bit
 
-def contar_num(n, habilitar):
+def contar_num(n, habilitar=True):
     bit = 64
     while habilitar and bit > 0 and n < (2 << (bit-1)) and n > -(2 << (bit-1)):
         bit = bit - 1
