@@ -1,7 +1,8 @@
 import spectral.io.envi as envi
 import numpy as np
-from operaciones import media, deviacion, covarianza, valores_rx
+from operaciones import media, deviacion, covarianza
 from inversa import inversa
+from valores_rx import valores_rx
 from comparar import ordenar_resultados
 from testbench import gen_testbench
 np.set_printoptions(suppress=True, linewidth=210)
