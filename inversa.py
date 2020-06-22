@@ -2,7 +2,7 @@ import numpy as np
 import logging
 import sys
 
-from manipular import contar, contar_num
+from manipular import contar
 
 
 
@@ -46,7 +46,7 @@ def inversa(cov, cov_in, inv_in, div_up, div_bc, div_dg, count_en):
             div = cov[j][i] / cov[i][i]
             div = div*pow(2, div_up)
             div = div // 1
-            c = contar_num(div, count_en)
+            c = contar(div, count_en)
             max_bits = max(max_bits, c)
             inv[j] = inv[j] - inv[i] * div * pow(2, -div_up) //1
             cov[j] = cov[j] - cov[i] * div * pow(2, -div_up) //1
@@ -70,7 +70,7 @@ def inversa(cov, cov_in, inv_in, div_up, div_bc, div_dg, count_en):
             div = cov[j][i] / cov[i][i]
             div = div*pow(2, div_bc)
             div = div // 1
-            c = contar_num(div, count_en)
+            c = contar(div, count_en)
             max_bits = max(max_bits, c)
             inv[j] = inv[j] - inv[i] * div * pow(2, -div_bc) //1
             cov[j] = cov[j] - cov[i] * div * pow(2, -div_bc) //1
