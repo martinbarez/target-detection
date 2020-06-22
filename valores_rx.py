@@ -9,7 +9,7 @@ def valores_rx(n_pixeles, inversa, deviacion, dev_up=0, inter_up=0):
     rx = np.zeros(n_pixeles, inversa.dtype)
     n_bandas = inversa.shape[0]
 
-    if inversa.dtype == np.float64 or inversa.dtype == np.float32:
+    if inversa.dtype == np.float64:
 
         for i in range(n_pixeles):
             resta = deviacion[i]
@@ -17,7 +17,7 @@ def valores_rx(n_pixeles, inversa, deviacion, dev_up=0, inter_up=0):
             inter_res = np.matmul(t, inversa)
             rx[i] = np.matmul(inter_res, resta)
 
-    elif inversa.dtype == np.int64 or inversa.dtype == np.int32:
+    elif inversa.dtype == np.int64:
         deviacion = shift(deviacion, dev_up)
         deviacion = clamp(deviacion, 25)
         inversa = clamp(inversa, 35)
@@ -35,6 +35,6 @@ def valores_rx(n_pixeles, inversa, deviacion, dev_up=0, inter_up=0):
             rx[i] = clamp(sum, 64)
 
     else:
-        print("Something bad happened in valores_rx")
+        raise Exception
 
     return rx
