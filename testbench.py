@@ -1,9 +1,24 @@
 import ctypes
+import numpy as np
+from manipular import clamp
+
+def to_str(var):
+    if var.dtype == np.float64:
+        return hex(ctypes.c_uint.from_buffer(ctypes.c_float(var)).value)[2:].zfill(8)
+    elif var.dtype == np.int64:
+        return hex(var & 0b111111111111111111111111)[2:].zfill(6)
+    else:
+        raise Exception
+
 
 def gen_testbench(mean, covariance, matrix, result):
     assert (mean.shape[0] == matrix.shape[0])
     (mean.shape[0] == covariance.shape[0] == covariance.shape[1])
     assert (matrix.shape[1] >= len(result))
+
+    mean = clamp(mean, 24)
+    covariance = clamp(covariance, 24)
+    matrix = clamp(matrix, 24)
 
     with open("cpu_simulator.vhd", 'r') as file:
         line_col = file.readlines()
@@ -48,7 +63,7 @@ def write_cov(file, covariance):
     for col in covariance:
         s = 'cov_fifo_din <= x"'
         for e in col:
-            s += hex(ctypes.c_uint.from_buffer(ctypes.c_float(e)).value)[2:].zfill(8)
+            s += to_str(e)
         s += '";\n'
         file.write(s)
         file.write("wait until CLK = '1';\n")
@@ -63,7 +78,7 @@ def write_mean(file,mean):
     file.write("\n")
     for e in mean:
         s = 'mean_fifo_din <= x"'
-        s += hex(ctypes.c_uint.from_buffer(ctypes.c_float(e)).value)[2:].zfill(8)
+        s += to_str(e)
         s += '";\n'
         file.write(s)
         file.write("wait until CLK = '1';\n")
@@ -79,7 +94,7 @@ def write_all_pixel(file, matrix):
     for row in matrix.transpose():
         for e in row:
             s = 'mean_fifo_din <= x"'
-            s += hex(ctypes.c_uint.from_buffer(ctypes.c_float(e)).value)[2:].zfill(8)
+            s += to_str(e)
             s += '";\n'
             file.write(s)
             file.write("wait until CLK = '1';\n")
