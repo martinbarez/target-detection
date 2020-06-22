@@ -2,7 +2,7 @@ import numpy as np
 import logging
 import sys
 
-from manipular import contar
+from manipular import contar, shift, clamp
 
 
 
@@ -19,8 +19,8 @@ def inversa(cov, cov_in, inv_in, div_up, div_bc, div_dg, count_en):
     for i in range(n_bandas):
         inv[i][i] = 1
 
-    cov = cov * pow(2, cov_in) //1
-    inv = inv * pow(2, inv_in) //1
+    cov = shift(cov, cov_in)
+    inv = shift(inv, inv_in)
     logging.info("Covarianza:")
     c = contar(cov, count_en)
     logging.info(c)
@@ -29,6 +29,8 @@ def inversa(cov, cov_in, inv_in, div_up, div_bc, div_dg, count_en):
     c = contar(inv, count_en)
     logging.info(c)
     logging.debug(inv)
+    cov = clamp(cov, 42)
+    inv = clamp(inv, 42)
 
     max_bits = 0
     #forward elimination to build an upper triangular matrix
@@ -44,12 +46,12 @@ def inversa(cov, cov_in, inv_in, div_up, div_bc, div_dg, count_en):
 
         for j in range(i + 1, n_bandas):
             div = cov[j][i] / cov[i][i]
-            div = div*pow(2, div_up)
-            div = div // 1
+            div = shift(div, div_up)
             c = contar(div, count_en)
+            div = clamp(div, 35)
             max_bits = max(max_bits, c)
-            inv[j] = inv[j] - inv[i] * div * pow(2, -div_up) //1
-            cov[j] = cov[j] - cov[i] * div * pow(2, -div_up) //1
+            inv[j] = inv[j] - shift(inv[i] * div, -div_up)
+            cov[j] = cov[j] - shift(cov[i] * div, -div_up)
 
 
     logging.info("Division:")
@@ -62,18 +64,20 @@ def inversa(cov, cov_in, inv_in, div_up, div_bc, div_dg, count_en):
     c = contar(inv, count_en)
     logging.info(c)
     logging.debug(inv)
+    cov = clamp(cov, 42)
+    inv = clamp(inv, 42)
 
     max_bits = 0
     #backward elimination to build a diagonal matrix
     for i in range(n_bandas-1, 0, -1):
         for j in range(i-1, -1, -1):
             div = cov[j][i] / cov[i][i]
-            div = div*pow(2, div_bc)
-            div = div // 1
+            div = shift(div, div_bc)
             c = contar(div, count_en)
             max_bits = max(max_bits, c)
-            inv[j] = inv[j] - inv[i] * div * pow(2, -div_bc) //1
-            cov[j] = cov[j] - cov[i] * div * pow(2, -div_bc) //1
+            div = clamp(div, 35)
+            inv[j] = inv[j] - shift(inv[i] * div, -div_bc)
+            cov[j] = cov[j] - shift(cov[i] * div, -div_bc)
 
     logging.info("Division:")
     logging.info(max_bits)
@@ -85,13 +89,13 @@ def inversa(cov, cov_in, inv_in, div_up, div_bc, div_dg, count_en):
     c = contar(inv, count_en)
     logging.info(c)
     logging.debug(inv)
+    cov = clamp(cov, 42)
+    inv = clamp(inv, 42)
 
     #last division to build identity [i][i]/[i][i]
     for i in range(n_bandas):
-        inv[i] = (inv[i] / cov[i][i])* pow(2, div_dg) //1
+        inv[i] = shift(inv[i] / cov[i][i], div_dg)
 
-    while(contar(inv, True) > 35):
-        inv = inv * pow(2, -1)
-        inv = inv //1
+    clamp(inv, 42)
 
     return inv.astype(np.int64), contar(inv, count_en)

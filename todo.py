@@ -48,11 +48,11 @@ rx_flotante = valores_rx(X.shape[1], inversa_flotante, d_aux)
 
 from difflib import SequenceMatcher
 
-cov_in = 15 # 18
-inv_in = 30
-div_up = 21
-div_bc = 13
-div_dg = 22
+cov_in = 20
+inv_in = 29
+div_up = 20
+div_bc = 20
+div_dg = 20
 cnt_en = False
 
 inversa_fija, bits = inversa(c_aux, cov_in, inv_in, div_up, div_bc, div_dg, cnt_en)
