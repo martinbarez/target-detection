@@ -50,8 +50,8 @@ def inversa(cov, cov_in, inv_in, div_up, div_bc, div_dg, count_en):
             c = contar(div, count_en)
             div = clamp(div, 35)
             max_bits = max(max_bits, c)
-            inv[j] = inv[j] - shift(inv[i] * div, -div_up)
-            cov[j] = cov[j] - shift(cov[i] * div, -div_up)
+            inv[j] = inv[j] - clamp(shift(inv[i] * div, -div_up), 48)
+            cov[j] = cov[j] - clamp(shift(cov[i] * div, -div_up), 48)
 
 
     logging.info("Division:")
@@ -76,8 +76,8 @@ def inversa(cov, cov_in, inv_in, div_up, div_bc, div_dg, count_en):
             c = contar(div, count_en)
             max_bits = max(max_bits, c)
             div = clamp(div, 35)
-            inv[j] = inv[j] - shift(inv[i] * div, -div_bc)
-            cov[j] = cov[j] - shift(cov[i] * div, -div_bc)
+            inv[j] = inv[j] - clamp(shift(inv[i] * div, -div_bc), 48)
+            cov[j] = cov[j] - clamp(shift(cov[i] * div, -div_bc), 48)
 
     logging.info("Division:")
     logging.info(max_bits)
@@ -96,6 +96,6 @@ def inversa(cov, cov_in, inv_in, div_up, div_bc, div_dg, count_en):
     for i in range(n_bandas):
         inv[i] = shift(inv[i] / cov[i][i], div_dg)
 
-    clamp(inv, 42)
+    clamp(inv, 35)
 
     return inv.astype(np.int64), contar(inv, count_en)

@@ -25,14 +25,14 @@ def valores_rx(n_pixeles, inversa, deviacion, dev_up=0, inter_up=0):
             resta = deviacion[i].astype(inversa.dtype)
             inter_res = np.zeros(n_bandas, inversa.dtype)
             for j in range(n_bandas):
-                mult = inversa[j] * resta[j]
-                inter_res += mult
+                mult = shift(inversa[j] * resta[j], -5)
+                inter_res += clamp(mult, 48)
             inter_res = shift(inter_res, inter_up)
             inter_res = clamp(inter_res, 35)
             sum = 0
             for j in range(n_bandas):
-                sum += inter_res[j] * resta[j]
-            rx[i] = sum
+                sum += clamp(shift(inter_res[j] * resta[j], -5), 48)
+            rx[i] = clamp(sum, 64)
 
     else:
         print("Something bad happened in valores_rx")
