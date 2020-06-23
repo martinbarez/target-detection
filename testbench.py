@@ -3,12 +3,10 @@ import numpy as np
 from manipular import clamp
 
 def to_str(var):
-    if var.dtype == np.float64:
+    if True:
         return hex(ctypes.c_uint.from_buffer(ctypes.c_float(var)).value)[2:].zfill(8)
-    elif var.dtype == np.int64:
-        return hex(var & 0b111111111111111111111111)[2:].zfill(6)
     else:
-        raise Exception
+        return hex(var & 0b111111111111111111111111)[2:].zfill(6)
 
 
 def gen_testbench(mean, covariance, matrix, result):
