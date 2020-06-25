@@ -1,4 +1,5 @@
 import numpy as np
+import inspect
 
 def contar(X, habilitar=True):
     bit = 64
@@ -33,5 +34,7 @@ def clamp(X, bits):
     X = np.int64(X * pow(2, 64 - bits))
     X = X // pow(2, 64 - bits)
     if (orig != X).any():
-        print("Some precision lost by clamping")
+        print("Some precision lost by clamping:")
+        print(inspect.stack()[1].code_context)
+        
     return X
