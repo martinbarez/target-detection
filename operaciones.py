@@ -1,5 +1,8 @@
 import numpy as np
 
+from manipular import clamp
+import rx_package as rx
+
 def media(X):
     return np.mean(X, axis=1)
 
@@ -8,8 +11,8 @@ def deviacion(X, media_bandas):
     Xt = np.transpose(X.copy())
 
     #A cada toma le resto la media de su banda
-    deviacion = (Xt-media_bandas)
-    return deviacion
+    deviacion = (clamp(Xt, rx.mean_sub_a_precision)-clamp(media_bandas, rx.mean_sub_b_precision))
+    return clamp(deviacion, rx.mean_sub_s_precision)
 
 
 def covarianza(X, deviacion):
