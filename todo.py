@@ -40,6 +40,9 @@ m_aux = media(X)
 d_aux = deviacion(X, m_aux)
 c_aux = covarianza(X, d_aux)
 
+from manipular import clamp
+c_aux = clamp(c_aux, 24)
+
 #Calculo en flotante para poder comparar luego
 inversa_flotante = np.linalg.inv(c_aux)
 rx_flotante = valores_rx(X.shape[1], inversa_flotante, d_aux)
@@ -57,9 +60,9 @@ cnt_en = False
 
 inversa_fija, bits = inversa(c_aux, cov_in, inv_in, div_up, div_bc, div_dg, cnt_en)
 
-dev_up = 10
-inter_up = -10
-rx_fijo = valores_rx(X.shape[1], inversa_fija, d_aux, dev_up, inter_up)
+dev_up = 0
+inter_down = 0
+rx_fijo = valores_rx(X.shape[1], inversa_fija, d_aux, dev_up, inter_down)
 
 res_ordenados = ordenar_resultados(rx_fijo, rx_flotante, 64)
 
