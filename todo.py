@@ -52,22 +52,17 @@ rx_flotante = valores_rx(X.shape[1], inversa_flotante, d_aux)
 
 from difflib import SequenceMatcher
 
-cov_in = 20
-inv_in = 29
-div_up = 20
-div_bc = 20
-div_dg = 20
 cnt_en = False
 
-inversa_fija, bits = inversa(c_aux, cov_in, inv_in, div_up, div_bc, div_dg, cnt_en)
+inversa_fija, bits = inversa(c_aux, cnt_en)
 
 dev_up = 0
 inter_down = 0
-rx_fijo = valores_rx(X.shape[1], inversa_fija, d_aux, dev_up, inter_down)
+rx_fijo = valores_rx(X.shape[1], inversa_fija, d_aux)
 
 res_ordenados = ordenar_resultados(rx_fijo, rx_flotante, 64)
 
 print(SequenceMatcher(None, *res_ordenados).ratio())
 if cnt_en: print(bits)
 
-gen_testbench(m_aux, c_aux, X, res_ordenados[1])
+#gen_testbench(m_aux, c_aux, X, res_ordenados[1])

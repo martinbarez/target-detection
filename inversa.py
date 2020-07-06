@@ -7,7 +7,7 @@ from manipular import contar, shift, clamp
 
 
 
-def inversa(cov, cov_in, inv_in, div_up, div_bc, div_dg, count_en):
+def inversa(cov, count_en):
     n_bandas = cov.shape[0]
     inv = np.zeros([n_bandas, n_bandas], np.int64)
 
@@ -20,8 +20,8 @@ def inversa(cov, cov_in, inv_in, div_up, div_bc, div_dg, count_en):
     for i in range(n_bandas):
         inv[i][i] = 1
 
-    cov = shift(cov, cov_in)
-    inv = shift(inv, inv_in)
+    cov = shift(cov, rx.cov_up)
+    inv = shift(inv, rx.inv_up)
     logging.info("Covarianza:")
     c = contar(cov, count_en)
     logging.info(c)
@@ -46,13 +46,12 @@ def inversa(cov, cov_in, inv_in, div_up, div_bc, div_dg, count_en):
         assert cov[i][i] != 0, "Matrix is singular"
 
         for j in range(i + 1, n_bandas):
-            div = cov[j][i] / cov[i][i]
-            div = shift(div, div_up)
+            div = shift(cov[j][i] / cov[i][i], rx.forw)
             c = contar(div, count_en)
             max_bits = max(max_bits, c)
             div = clamp(div, rx.quotient_precision)
-            inv[j] = inv[j] - clamp(shift(inv[i] * div, -div_up), rx.gauss_sub_b_precision)
-            cov[j] = cov[j] - clamp(shift(cov[i] * div, -div_up), rx.gauss_sub_b_precision)
+            inv[j] = inv[j] - clamp(shift(inv[i] * div, -rx.forw), rx.gauss_sub_b_precision)
+            cov[j] = cov[j] - clamp(shift(cov[i] * div, -rx.forw), rx.gauss_sub_b_precision)
 
 
     logging.info("Division:")
@@ -72,13 +71,12 @@ def inversa(cov, cov_in, inv_in, div_up, div_bc, div_dg, count_en):
     #backward elimination to build a diagonal matrix
     for i in range(n_bandas-1, 0, -1):
         for j in range(i-1, -1, -1):
-            div = cov[j][i] / cov[i][i]
-            div = shift(div, div_bc)
+            div = shift(cov[j][i] / cov[i][i], rx.back)
             c = contar(div, count_en)
             max_bits = max(max_bits, c)
             div = clamp(div, rx.quotient_precision)
-            inv[j] = inv[j] - clamp(shift(inv[i] * div, -div_bc), rx.gauss_sub_b_precision)
-            cov[j] = cov[j] - clamp(shift(cov[i] * div, -div_bc), rx.gauss_sub_b_precision)
+            inv[j] = inv[j] - clamp(shift(inv[i] * div, -rx.back), rx.gauss_sub_b_precision)
+            cov[j] = cov[j] - clamp(shift(cov[i] * div, -rx.back), rx.gauss_sub_b_precision)
 
     logging.info("Division:")
     logging.info(max_bits)
@@ -95,9 +93,9 @@ def inversa(cov, cov_in, inv_in, div_up, div_bc, div_dg, count_en):
 
     #last division to build identity [i][i]/[i][i]
     for i in range(n_bandas):
-        div = shift(1, inv_in) / cov[i][i]
+        div = shift(1, rx.diag_up) // cov[i][i]
         div = clamp(div, rx.quotient_precision)
-        inv[i] = clamp(shift(inv[i] * div, -div_dg), rx.ram_precision)
+        inv[i] = clamp(shift(inv[i] * div, -rx.diag_dw), rx.ram_precision)
 
 
     return inv.astype(np.int64), contar(inv, count_en)

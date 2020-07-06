@@ -1,3 +1,15 @@
+cov_up = 20
+inv_up = 29
+
+forw = 24
+back = 17
+diag_up = 48
+diag_dw = 27
+
+st_mult = 0
+st_accum = 0
+nd_mult = 0
+
 precision        = 24
 ram_precision    = 42
 sorter_precision = 48
@@ -18,7 +30,7 @@ mean_sub_s_precision = 24
 
 mult_st_mul_a_precision = mean_sub_s_precision
 mult_st_mul_b_precision = ram_precision
-mult_st_mul_p_precision = 45
+mult_st_mul_p_precision = 48
 mult_st_accum_in_precision  = mult_st_mul_p_precision
 mult_st_accum_out_precision = 48
 
