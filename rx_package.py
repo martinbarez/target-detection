@@ -1,10 +1,12 @@
-cov_up = 20
-inv_up = 29
+read_cov = 20
+read_inv = 29
 
 forw = 24
 back = 17
-diag_up = 48
-diag_dw = 27
+diag = 24
+
+write_up = 24
+write_dw = 3
 
 st_mult = 0
 st_accum = 0

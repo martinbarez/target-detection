@@ -20,8 +20,8 @@ def inversa(cov, count_en):
     for i in range(n_bandas):
         inv[i][i] = 1
 
-    cov = shift(cov, rx.cov_up)
-    inv = shift(inv, rx.inv_up)
+    cov = shift(cov, rx.read_cov)
+    inv = shift(inv, rx.read_inv)
     logging.info("Covarianza:")
     c = contar(cov, count_en)
     logging.info(c)
@@ -93,9 +93,11 @@ def inversa(cov, count_en):
 
     #last division to build identity [i][i]/[i][i]
     for i in range(n_bandas):
-        div = shift(1, rx.diag_up) // cov[i][i]
+        div = shift(1, rx.write_up+rx.diag) // cov[i][i]
         div = clamp(div, rx.quotient_precision)
-        inv[i] = clamp(shift(inv[i] * div, -rx.diag_dw), rx.ram_precision)
+        inv[i] = clamp(shift(inv[i] * div, -rx.diag), rx.ram_precision)
+
+    inv = shift(inv, -rx.write_dw)
 
 
     return inv.astype(np.int64), contar(inv, count_en)
