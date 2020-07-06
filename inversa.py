@@ -95,8 +95,9 @@ def inversa(cov, cov_in, inv_in, div_up, div_bc, div_dg, count_en):
 
     #last division to build identity [i][i]/[i][i]
     for i in range(n_bandas):
-        inv[i] = shift(inv[i] / cov[i][i], div_dg)
+        div = shift(1, inv_in) / cov[i][i]
+        div = clamp(div, rx.quotient_precision)
+        inv[i] = clamp(shift(inv[i] * div, -div_dg), rx.ram_precision)
 
-    clamp(inv, rx.quotient_precision)
 
     return inv.astype(np.int64), contar(inv, count_en)

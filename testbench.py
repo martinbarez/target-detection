@@ -1,9 +1,10 @@
 import ctypes
 import numpy as np
 from manipular import clamp
+import rx_package as rx
 
 def to_str(var):
-    if True:
+    if False:
         return hex(ctypes.c_uint.from_buffer(ctypes.c_float(var)).value)[2:].zfill(8)
     else:
         return hex(var & 0b111111111111111111111111)[2:].zfill(6)
@@ -14,9 +15,9 @@ def gen_testbench(mean, covariance, matrix, result):
     (mean.shape[0] == covariance.shape[0] == covariance.shape[1])
     assert (matrix.shape[1] >= len(result))
 
-    mean = clamp(mean, 24)
-    covariance = clamp(covariance, 24)
-    matrix = clamp(matrix, 24)
+    mean = clamp(mean, rx.precision)
+    covariance = clamp(covariance, rx.precision)
+    matrix = clamp(matrix, rx.precision)
 
     with open("cpu_simulator.vhd", 'r') as file:
         line_col = file.readlines()

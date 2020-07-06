@@ -5,6 +5,7 @@ from inversa import inversa
 from valores_rx import valores_rx
 from comparar import ordenar_resultados
 from testbench import gen_testbench
+import rx_package as rx
 np.set_printoptions(suppress=True, linewidth=210)
 
 
@@ -41,7 +42,7 @@ d_aux = deviacion(X, m_aux)
 c_aux = covarianza(X, d_aux)
 
 from manipular import clamp
-c_aux = clamp(c_aux, 24)
+c_aux = clamp(c_aux, rx.precision)
 
 #Calculo en flotante para poder comparar luego
 inversa_flotante = np.linalg.inv(c_aux)
