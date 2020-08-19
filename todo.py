@@ -27,11 +27,13 @@ X = np.random.randint(low=0, high=256, size=(N, M))
 
 
 #Una imagen de verdad
-img = envi.open('hydice.hdr').load()
+img = envi.open('SubsetWTC.hdr').load()
 #para cortar la imagen
 #img = img[10:20, 10:20, 0:55]
 X = np.reshape(img, (img.shape[0] * img.shape[1], img.shape[2]))
 X = np.transpose(X) #para que cada banda sea una fila
+N = img.shape[2]
+M = img.shape[0] * img.shape[1]
 
 #Lo transformo a float para realizar todas las operaciones
 X = X.astype(np.float64)
@@ -59,8 +61,15 @@ inversa_fija, bits = inversa(c_aux, cnt_en)
 dev_up = 0
 inter_down = 0
 rx_fijo = valores_rx(X.shape[1], inversa_fija, d_aux)
+res_ordenados = ordenar_resultados(rx_fijo, rx_flotante, M)
 
-res_ordenados = ordenar_resultados(rx_fijo, rx_flotante, 64)
+with open('results_wtc_truth.txt', 'w') as file:
+    for i in range(0, M):
+        file.write(str(res_ordenados[1][i])+'\n')
+
+with open('results_wtc_simul.txt', 'w') as file:
+    for i in range(0, M):
+        file.write(str(res_ordenados[0][i])+'\n')
 
 print(SequenceMatcher(None, *res_ordenados).ratio())
 if cnt_en: print(bits)
