@@ -25,9 +25,12 @@ def angle_compare(X, target_coord, ref_coord, threshhold = 10):
 
 #if the coords are next to each other (up, down, right, left, including diagonals)
 def spatial_compare(X, target_coord, ref_coord, threshhold = 1):
-    for i in range(threshhold+1):
-      if abs(target_coord-abs(sqrt(X.shape[1])*i-ref_coord)) <= threshhold or abs(target_coord-abs(sqrt(X.shape[1])*i+ref_coord)) <= threshhold:
-        return True
+    size = sqrt(X.shape[1])
+    target_coord = (target_coord%size, target_coord/size)
+    ref_coord = (ref_coord%size, ref_coord/size)
+    if target_coord[0]>= ref_coord[0]-threshhold and target_coord[0] <= ref_coord[0]+threshhold:
+        if target_coord[1]>= ref_coord[1]-threshhold and target_coord[1] <= ref_coord[1]+threshhold:
+            return True
     return False
 
 #que porcentaje de los elementos han sido encontrados hasta ese mismo momento en ambas listas
