@@ -43,7 +43,7 @@ def analyze(X, target, reference, compare_func):
         for j in range(i+1):
             if found[j] is False:  #update every coord not found till current one
                 for k in range(j+1):  #compare updating coord with all past reference coords
-                    if compare_func(X, target[j], reference[k]) is True:
+                    if compare_func(X, target[j], reference[k]):
                         found[j] = True
 
         result.append(sum(1 for e in found[:i] if e))  #count found coords
