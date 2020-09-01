@@ -40,9 +40,9 @@ def analyze(X, target, reference, compare_func):
     found = []
     for i in range(len(target)):  #to graph different x
         found.append(False)
-        for j in range(i):
+        for j in range(i+1):
             if found[j] is False:  #update every coord not found till current one
-                for k in range(j):  #compare updating coord with all past reference coords
+                for k in range(j+1):  #compare updating coord with all past reference coords
                     if compare_func(X, target[j], reference[k]) is True:
                         found[j] = True
 
