@@ -1,5 +1,4 @@
 import numpy as np
-from matplotlib import pyplot as plt
 from math import sqrt
 
 #spectral angle mapping
@@ -33,40 +32,40 @@ def spatial_compare(X, target_coord, ref_coord, threshhold = 1):
             return True
     return False
 
-#que porcentaje de los elementos han sido encontrados hasta ese mismo momento en ambas listas
-#Es decir, si encuentro lo mismo todo el rato, el ratio es 1, en el
-#momento en el que hay algo diferente, baja, pero si me lo encuentro en el
-#siguiente elemento vuelve a subir. Y si solo había dos elementos permutados
-#vuelve a saltar a 1
-def grafico(fijo, flotante):
-    graf = []
-    for i in range(1, len(fijo)):
-        found = sum(1 for e in fijo[:i] if e in flotante[:i])
-        ratio = found/i
-        graf.append(ratio)
+def simple_compare(X, target_coord, ref_coord, threshhold = -1):
+    return target_coord == ref_coord
 
-    plt.xlabel("Nº de elementos")
-    plt.ylabel("Ratio de elementos hallados/totales")
-    plt.axis([0, len(fijo), 0, 1])
-    plt.plot(graf)
+def analyze(X, target, reference, compare_func):
+    result = []
+    found = []
+    for i in range(len(target)):  #to graph different x
+        found.append(False)
+        for j in range(i):
+            if found[j] is False:  #update every coord not found till current one
+                for k in range(j):  #compare updating coord with all past reference coords
+                    if compare_func(X, target[j], reference[k]) is True:
+                        found[j] = True
 
-#ordeno los resultados en dos listas y me quedo con cantidad de elementos
-def ordenar_resultados(rx_fijo, rx_flotante, cantidad=0):
-    #añado índices
-    fijo = list(enumerate(rx_fijo))
-    flotante = list(enumerate(rx_flotante))
+        result.append(sum(1 for e in found[:i] if e))  #count found coords
+    return result
 
-    #ordeno
-    fijo.sort(key=lambda tup: tup[1], reverse=True)
-    flotante.sort(key=lambda tup: tup[1], reverse=True)
+#get coords from list of rx_values
+def coords(target_values, reference_values, size=0):
+    #add indices
+    target = list(enumerate(target_values))
+    reference = list(enumerate(reference_values))
 
-    #recorto
-    if cantidad > 0:
-      fijo = fijo[:cantidad]
-      flotante = flotante[: len(fijo)]
+    #order
+    target.sort(key=lambda tup: tup[1], reverse=True)
+    reference.sort(key=lambda tup: tup[1], reverse=True)
 
-    #elimino valores
-    fijo = [x[0] for x in fijo]
-    flotante = [x[0] for x in flotante]
+    #cut
+    if size > 0:
+      target = target[:size]
+      reference = reference[: len(target)]
 
-    return fijo, flotante
+    #remove values
+    target = [x[0] for x in target]
+    reference = [x[0] for x in reference]
+
+    return target, reference
