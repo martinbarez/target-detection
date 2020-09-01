@@ -4,6 +4,9 @@ from math import sqrt
 #spectral angle mapping
 #https://earth.esa.int/documents/973910/1002056/CK2.pdf/861e7d6e-dbcf-4209-a29a-e283cc0e67d6
 def angle_compare(X, target_coord, ref_coord, threshhold = 10):
+    if target_coord == ref_coord: #the limited floating point precision could make this to fail
+        return True
+
     #all bands for a pixel
     target = X[:,target_coord]
     reference = X[:,ref_coord]
