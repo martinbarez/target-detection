@@ -3,7 +3,7 @@ from math import sqrt
 
 #spectral angle mapping
 #https://earth.esa.int/documents/973910/1002056/CK2.pdf/861e7d6e-dbcf-4209-a29a-e283cc0e67d6
-def angle_compare(X, target_coord, ref_coord, threshhold = 10):
+def angle_compare(X, target_coord, ref_coord, threshold = 10):
     if target_coord == ref_coord: #the limited floating point precision could make this to fail
         return True
 
@@ -22,23 +22,23 @@ def angle_compare(X, target_coord, ref_coord, threshhold = 10):
 
     angle = angle_rad * 180 / np.pi
 
-    return angle < threshhold
+    return angle < threshold
 
 
 #if the coords are next to each other (up, down, right, left, including diagonals)
-def spatial_compare(X, target_coord, ref_coord, threshhold = 1):
+def spatial_compare(X, target_coord, ref_coord, threshold = 1):
     size = sqrt(X.shape[1])
     target_coord = (target_coord%size, target_coord/size)
     ref_coord = (ref_coord%size, ref_coord/size)
-    if target_coord[0]>= ref_coord[0]-threshhold and target_coord[0] <= ref_coord[0]+threshhold:
-        if target_coord[1]>= ref_coord[1]-threshhold and target_coord[1] <= ref_coord[1]+threshhold:
+    if target_coord[0]>= ref_coord[0]-threshold and target_coord[0] <= ref_coord[0]+threshold:
+        if target_coord[1]>= ref_coord[1]-threshold and target_coord[1] <= ref_coord[1]+threshold:
             return True
     return False
 
-def simple_compare(X, target_coord, ref_coord, threshhold = -1):
+def simple_compare(X, target_coord, ref_coord, threshold = -1):
     return target_coord == ref_coord
 
-def analyze(X, target, reference, compare_func):
+def analyze(X, target, reference, compare_func, threshold):
     result = []
     found = []
     for i in range(len(target)):  #to graph different x
@@ -46,7 +46,7 @@ def analyze(X, target, reference, compare_func):
         for j in range(i+1):
             if found[j] is False:  #update every coord not found till current one
                 for k in range(j+1):  #compare updating coord with all past reference coords
-                    if compare_func(X, target[j], reference[k]):
+                    if compare_func(X, target[j], reference[k], threshold):
                         found[j] = True
 
         result.append(sum(1 for e in found[:i] if e))  #count found coords
