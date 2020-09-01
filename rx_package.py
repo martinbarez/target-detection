@@ -10,9 +10,9 @@ write_dw = 3
 
 st_mult = 0
 st_accum = 0
-nd_mult = 0 #0 for hydice
+nd_mult = 0 #0 for hydice, -6 for wtc
 
-precision        = 64 #24 for hydice
+precision        = 24 #24 for hydice, 64 for wtc
 ram_precision    = 42
 sorter_precision = 48
 
