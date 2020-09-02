@@ -7,7 +7,7 @@ def to_str(var):
     if False:
         return hex(ctypes.c_uint.from_buffer(ctypes.c_float(var)).value)[2:].zfill(8)
     else:
-        return hex(var & 0b111111111111111111111111)[2:].zfill(6)
+        return hex(var & 0b111111111111111111111111)[2:].zfill(rx.precision//4)
 
 
 def gen_testbench(mean, covariance, matrix, result):

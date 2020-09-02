@@ -11,8 +11,7 @@ def deviacion(X, media_bandas):
     Xt = np.transpose(X.copy())
 
     #A cada toma le resto la media de su banda
-    deviacion = (clamp(Xt, rx.mean_sub_a_precision)-clamp(media_bandas, rx.mean_sub_b_precision))
-    return clamp(deviacion, rx.mean_sub_s_precision)
+    return Xt-media_bandas
 
 
 def covarianza(X, deviacion):

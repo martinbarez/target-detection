@@ -1,18 +1,18 @@
 read_cov = 20
-read_inv = 29
+read_inv = 28
 
-forw = 24
-back = 17
-diag = 24
+forw = 20
+back = 18
+diag = 20
 
-write_up = 24
-write_dw = 3
+write_up = 31
+write_dw = 0
 
-st_mult = 0
+st_mult = -14
 st_accum = 0
-nd_mult = 0 #0 for hydice, -6 for wtc
+nd_mult = -18
 
-precision        = 24 #24 for hydice, 64 for wtc
+precision        = 48
 ram_precision    = 42
 sorter_precision = 48
 
@@ -28,7 +28,7 @@ gauss_sub_s_precision = ram_precision
 
 mean_sub_a_precision = precision
 mean_sub_b_precision = precision
-mean_sub_s_precision = 24
+mean_sub_s_precision = 48
 
 mult_st_mul_a_precision = mean_sub_s_precision
 mult_st_mul_b_precision = ram_precision

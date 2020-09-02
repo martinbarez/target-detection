@@ -20,7 +20,7 @@ def inversa(cov, count_en):
     for i in range(n_bandas):
         inv[i][i] = 1
 
-    cov = shift(cov, rx.read_cov)
+    #cov = shift(cov, rx.read_cov)
     inv = shift(inv, rx.read_inv)
     logging.info("Covarianza:")
     c = contar(cov, count_en)
