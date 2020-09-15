@@ -1,16 +1,16 @@
 read_cov = 20
-read_inv = 28
+read_inv = 28 #28 hidyce, 30 wtc
 
 forw = 20
 back = 18
 diag = 20
 
-write_up = 31
+write_up = 31 #31 hydice, 30 wtc
 write_dw = 0
 
-st_mult = -14
-st_accum = 0
-nd_mult = -18
+st_mult = -14 #-14 hydice, -18 wtc
+st_accum = 0 #0 hydice, -3 wtc
+nd_mult = -18 #-18 hydice, -19 wtc
 
 precision        = 48
 ram_precision    = 42
